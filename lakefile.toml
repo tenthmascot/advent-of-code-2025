@@ -2,6 +2,11 @@ name = "AoC2025"
 version = "0.1.0"
 defaultTargets = ["aoc2025"]
 
+[[require]]
+name = "batteries"
+scope = "leanprover-community"
+rev = "main"
+
 [[lean_lib]]
 name = "AoC2025"
 
