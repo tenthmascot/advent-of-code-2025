@@ -12,7 +12,7 @@ def parse (raw : String) : List (Int × Nat) :=
   raw.splitOn "\n" |>.map parse_step
 
 def solve_aux (l : List Int) : Nat :=
-  l.scanl (· + ·) 50 |>.countP (100 ∣ ·)
+  l.scanl (· + Fin.intCast ·) (50 : Fin 100) |>.count 0
 
 def part1 (l : List (Int × Nat)) : Nat :=
   solve_aux <| l.map (fun (d, n) => d * n)
