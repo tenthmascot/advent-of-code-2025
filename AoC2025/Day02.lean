@@ -13,9 +13,6 @@ def parse (raw : String) : List (Nat × String) :=
   raw.splitOn "," |>.flatMap parse_line
   |>.map (fun x => (x, toString x))
 
--- def solve_aux (l : List Int) : Nat :=
---   l.scanl (· + Fin.intCast ·) (50 : Fin 100) |>.count 0
-
 def part1_ok (s : String) : Bool :=
   s.toSlice.take (s.length / 2) == s.toSlice.drop (s.length / 2)
 
