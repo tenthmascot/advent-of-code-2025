@@ -2,7 +2,8 @@ import AoC2025
 
 /-- A list of the main definitions of all quests. -/
 def mains := [
-  Day01.main
+  Day01.main,
+  Day02.main,
 ]
 
 def main (args : List String) : IO Unit := do
