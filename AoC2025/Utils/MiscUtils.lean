@@ -4,6 +4,9 @@ open Std
 /-- The four unit vectors, as `Int × Int`:
 `List.padj4 = [(1, 0), (-1, 0), (0, 1), (0, -1)]`. -/
 def List.padj4 : List (Int × Int) := [(1, 0), (-1, 0), (0, 1), (0, -1)]
+/-- The eight unit vectors, as `Int × Int`:
+`List.padj4 = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]`. -/
+def List.padj8 : List (Int × Int) := [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
 
 /-- Returns the list `l` without duplicates, in some order.
 Uses a HashSet for faster performance over the `List.dedup` function in Mathlib. -/
