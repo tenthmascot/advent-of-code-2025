@@ -6,6 +6,7 @@ def mains := [
   Day02.main,
   Day03.main,
   Day04.main,
+  Day05.main,
 ]
 
 def main (args : List String) : IO Unit := do
