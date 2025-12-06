@@ -5,7 +5,7 @@ open Std
 
 local instance : Inhabited Range := ⟨[:0]⟩
 local instance {i : Nat} {r : Range} : Decidable (i ∈ r) :=
-  decidable_of_iff (r.start ≤ i ∧ i < r.stop ∧ (i - r.start) % r.step = 0) (by rfl)
+  inferInstanceAs <| Decidable <| r.start ≤ i ∧ i < r.stop ∧ (i - r.start) % r.step = 0
 
 namespace Day05
 
