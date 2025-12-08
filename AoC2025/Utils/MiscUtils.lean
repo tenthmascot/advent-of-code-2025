@@ -8,6 +8,16 @@ def List.padj4 : List (Int × Int) := [(1, 0), (-1, 0), (0, 1), (0, -1)]
 `List.padj4 = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]`. -/
 def List.padj8 : List (Int × Int) := [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
 
+/--
+Computes the product of the elements of an array.
+
+Examples:
+ * `#[a, b, c].prod = a * (b * (c * 1))`
+ * `#[1, 2, 5].prod = 10`
+-/
+def Array.prod {α : Type u} [Mul α] [One α] : Array α → α :=
+  foldr (· * ·) 1
+
 /-- Returns the list `l` without duplicates, in some order.
 Uses a HashSet for faster performance over the `List.dedup` function in Mathlib. -/
 def List.fast_dedup {α} [BEq α] [Hashable α] (l : List α) : List α :=
