@@ -55,9 +55,9 @@ def Array.adj_pairs {α} (xs : Array α) : Array (α × α) :=
 Returns all subsequences of length 2 from an array as pairs.
 
 Examples:
-* `#[].adj_pairs = #[]`
-* `#[1].adj_pairs = #[]`
-* `#[1, 2, 3, 4].adj_pairs = #[(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]`
+* `#[].all_pairs = #[]`
+* `#[1].all_pairs = #[]`
+* `#[1, 2, 3, 4].all_pairs = #[(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]`
 -/
 def Array.all_pairs {α} (xs : Array α) : Array (α × α) :=
   Array.finRange xs.size |>.flatMap
