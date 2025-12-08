@@ -51,6 +51,19 @@ Examples:
 def Array.adj_pairs {α} (xs : Array α) : Array (α × α) :=
   Array.finRange (xs.size - 1) |>.map (fun i => (xs[i.1], xs[i.1+1]))
 
+/--
+Returns all subsequences of length 2 from an array as pairs.
+
+Examples:
+* `#[].adj_pairs = #[]`
+* `#[1].adj_pairs = #[]`
+* `#[1, 2, 3, 4].adj_pairs = #[(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]`
+-/
+def Array.all_pairs {α} (xs : Array α) : Array (α × α) :=
+  Array.finRange xs.size |>.flatMap
+    (fun i => Array.finRange xs.size |>.toSubarray (i.1 + 1)
+      |>.toArray.map (fun j => (i, j)))
+  |>.map (fun (i, j) => (xs[i], xs[j]))
 
 /--
 Returns successive adjacent pairs from a vector.
