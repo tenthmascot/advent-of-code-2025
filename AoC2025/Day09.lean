@@ -37,8 +37,8 @@ def part1 (points : Array Point) : Nat :=
 
 Sort the list, removes duplicates, and constructs a new list starting at 1,
 increasing by
-- 1 if the next number is only 1 more than the previous number, and
-- 2 if the next number is at least 2 more than the previous number.
+* 1 if the next number is only 1 more than the previous number, and
+* 2 if the next number is at least 2 more than the previous number.
 
 Finally, returns a `HashMap` sending the list to its compression. -/
 def compress_ints (l : List Int) : HashMap Int Int :=
