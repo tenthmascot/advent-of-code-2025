@@ -51,18 +51,21 @@ def parse_single_raw (raw : String) : RawData :=
 def parse (raw : String) : List Data :=
   raw.splitOn "\n" |>.map (RawData.unraw ∘ parse_single_raw)
 
-def patterns {n} (buttons : Array (Vector Nat n)) : HashMap (Vector Nat n) Nat :=
+def patterns {n} (buttons : Array (Vector Nat n)) : HashMap (Vector (Fin 2) n) (HashMap (Vector Nat n) Nat) :=
   buttons.toList.sublists.foldl (
     fun out row =>
       let pattern := row.sum
-      out.insert pattern (min (out.getD pattern 1000000) row.length)
+      let parityPattern := pattern.map (Fin.ofNat _ ·)
+      if h : parityPattern ∈ out then
+        out.insert parityPattern
+          (out[parityPattern].insert pattern (min (out[parityPattern].getD pattern 1000000) row.length))
+      else out.insert parityPattern {(pattern, row.length)}
   ) ∅
 
 def part1_single (data : Data) : Nat :=
   let ⟨lights, buttons, _⟩ := data
   let patternCosts := patterns buttons
-  patternCosts.filter (fun pattern _ => pattern.map (Fin.ofNat _ ·) == lights)
-    |>.toList.map Prod.snd |>.min?.getD 1000000
+  patternCosts[lights]!.toList.map Prod.snd |>.min?.get!
 
 def part1 (datas : List Data) : Nat :=
   datas.map part1_single |>.sum
@@ -70,7 +73,7 @@ def part1 (datas : List Data) : Nat :=
 def part2_single (data : Data) : Nat :=
   let ⟨_, buttons, joltages⟩ := data
   inner (patterns buttons) joltages (fuel := 10) |>.run' ∅ |>.run where
-  inner {n} (patternCosts : HashMap (Vector Nat n) Nat)
+  inner {n} (patternCosts : HashMap (Vector (Fin 2) n) (HashMap (Vector Nat n) Nat))
       (joltages : Vector Nat n) (fuel : Nat) :
       StateM (HashMap (Vector Nat n) Nat) Nat := do
     if let some answer := (← get)[joltages]?
@@ -80,9 +83,10 @@ def part2_single (data : Data) : Nat :=
       | 0 => panic! s!"part2_single.inner ran out of fuel"
       | fuel+1 =>
         if joltages = 0 then return 0 else do
+        let parityJoltages := joltages.map (Fin.ofNat _ ·)
         let mut possibleAnswers := []
-        for (pattern, patternCost) in patternCosts do
-          if pattern.zip joltages |>.all (fun (i, j) => i ≤ j && i % 2 == j % 2) then
+        for (pattern, patternCost) in patternCosts.getD parityJoltages ∅ do
+          if pattern.zip joltages |>.all (fun (i, j) => i ≤ j) then
             -- intentional Nat subtraction
             let newJoltages := pattern.zipWith (fun i j => (j - i) / 2) joltages
             possibleAnswers := possibleAnswers.cons (patternCost + 2 * (← inner patternCosts newJoltages fuel))
